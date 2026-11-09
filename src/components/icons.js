@@ -1,0 +1,28 @@
+import {html,React,useState} from '../lib/h.js';
+import {C,INK} from './ui.js';
+
+/* ---------- icons (vector approximations of the original icon set) ---------- */
+export const Svg=({vb=48,className='',children})=>html`<svg viewBox=${'0 0 '+vb+' '+vb} className=${className} aria-hidden="true" fill="none" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.8">${children}</svg>`;
+export const gearPath=(cx,cy,ro,ri,n)=>{let p=[];for(let i=0;i<n;i++){const a=i*2*Math.PI/n,w=Math.PI/n*0.45;[[a-w*1.3,ri],[a-w*0.7,ro],[a+w*0.7,ro],[a+w*1.3,ri]].forEach(([t,r])=>p.push((cx+r*Math.cos(t)).toFixed(1)+' '+(cy+r*Math.sin(t)).toFixed(1)))}return 'M'+p.join('L')+'Z'};
+export const G=C.gold;
+export const IcoShield=({className})=>html`<${Svg} className=${className}><g stroke=${G}><path d="M24 4l16 6v12c0 11-7 18-16 22C15 40 8 33 8 22V10z"/><path d="M16 24l6 6 11-12"/></g><//>`;
+export const IcoRibbon=({className})=>html`<${Svg} className=${className}><g stroke=${G}><circle cx="24" cy="18" r="12"/><circle cx="24" cy="18" r="7"/><path d="M17 28l-4 16 11-6 11 6-4-16"/></g><//>`;
+export const IcoGear=({className})=>html`<${Svg} className=${className}><g stroke=${G}><path d=${gearPath(24,24,21,15.5,8)}/><circle cx="24" cy="24" r="7"/></g><//>`;
+export const IcoThumb=({className})=>html`<${Svg} className=${className}><g stroke=${G}><path d="M5 22h8v20H5z"/><path d="M13 24l8-17c3.5 0 5.5 3 4.5 8H39a3 3 0 0 1 3 3.6l-2.6 14.4a3 3 0 0 1-3 2.5H13"/></g><//>`;
+export const IcoCalClock=({className})=>html`<${Svg} className=${className}><g stroke=${G}><rect x="5" y="9" width="30" height="31" rx="3"/><path d="M5 19h30M13 4v10M27 4v10"/><path d="M11 25h3M18 25h3M25 25h3M11 32h3M18 32h3" strokeWidth="3.2"/><circle cx="36" cy="36" r="9" fill=${INK}/><path d="M36 31v5.5l3.5 2"/></g><//>`;
+export const IcoClockSpeed=({className})=>html`<${Svg} className=${className}><g stroke=${C.zb}><circle cx="30" cy="24" r="16"/><path d="M30 14v11l8 5"/><path d="M3 17h14M1 25h15M5 33h12"/></g><//>`;
+export const IcoSiren=({className})=>html`<${Svg} className=${className}><g stroke=${C.rd}><path d="M14 35V24a10 10 0 0 1 20 0v11"/><path d="M9 35h30v6H9z"/><path d="M24 4v5M9 11l4 4M39 11l-4 4M3 25h5M40 25h5"/><path d="M19 25a5 5 0 0 1 5-5"/></g><//>`;
+export const IcoClock=({className})=>html`<${Svg} className=${className}><g stroke=${G}><circle cx="24" cy="24" r="19"/><path d="M24 12v13l8 5"/></g><//>`;
+export const IcoCal=({className})=>html`<${Svg} className=${className}><g stroke=${G}><rect x="6" y="9" width="36" height="33" rx="4"/><path d="M6 19h36M15 4v9M33 4v9"/><path d="M14 26h3M22.5 26h3M31 26h3M14 34h3M22.5 34h3M31 34h3" strokeWidth="3.4"/></g><//>`;
+export const IcoPin=({className})=>html`<${Svg} vb=${40} className=${className}><path d="M20 38S7 24.5 7 16a13 13 0 0 1 26 0c0 8.5-13 22-13 22z" fill=${G} stroke="none"/><circle cx="20" cy="16" r="5" fill=${INK} stroke="none"/><//>`;
+export const IcoRoad=({className})=>html`<${Svg} vb=${40} className=${className}><path d="M15 4h10l12 33H3z" fill="#8f8f8f" stroke="none"/><path d="M20 8v6M20 19v7M20 31v6" stroke=${INK} strokeWidth="2.6"/><//>`;
+export const IcoMount=({className})=>html`<${Svg} vb=${48} className=${className}><path d="M1 40L17 12l10 14 6-8 14 22z" fill=${C.zg} stroke="none"/><path d="M17 12l-5 8 5-3 4 5z" fill="#c9d6a0" stroke="none"/><//>`;
+export const IcoCity=({className})=>html`<${Svg} vb=${48} className=${className}><g fill="#7d7587" stroke="none"><rect x="3" y="20" width="13" height="20"/><rect x="18" y="5" width="13" height="35"/><rect x="33" y="15" width="12" height="25"/></g><path d="M7 25h2M11 25h2M7 31h2M11 31h2M22 11h2M26 11h2M22 18h2M26 18h2M22 25h2M26 25h2M37 21h2M41 21h2M37 28h2M41 28h2" stroke=${INK} strokeWidth="2"/><//>`;
+export const IcoInfo=({className})=>html`<${Svg} vb=${24} className=${className}><g stroke=${G} strokeWidth="1.8"><circle cx="12" cy="12" r="9.5"/><path d="M12 7.5v6M12 16.5v.4"/></g><//>`;
+export const IcoPhone=({className})=>html`<svg viewBox="0 0 24 24" className=${className} aria-hidden="true" fill=${G}><path d="M6.62 10.79c1.44 2.83 3.76 5.14 6.59 6.59l2.2-2.2c.27-.27.67-.36 1.02-.24 1.12.37 2.33.57 3.57.57.55 0 1 .45 1 1V20c0 .55-.45 1-1 1-9.39 0-17-7.61-17-17 0-.55.45-1 1-1h3.5c.55 0 1 .45 1 1 0 1.25.2 2.45.57 3.57.11.35.03.74-.25 1.02l-2.2 2.2z"/></svg>`;
+export const IcoPhoneO=({className})=>html`<${Svg} vb=${24} className=${className}><g stroke=${G} strokeWidth="1.6"><path d="M5 4h4l2 5-2.5 1.5a11 11 0 0 0 5 5L15 13l5 2v4a2 2 0 0 1-2 2A16 16 0 0 1 3 6a2 2 0 0 1 2-2z"/></g><//>`;
+export const IcoMail=({className})=>html`<${Svg} vb=${24} className=${className}><g stroke=${G} strokeWidth="1.6"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3 7l9 7 9-7"/></g><//>`;
+export const IcoPinO=({className})=>html`<${Svg} vb=${24} className=${className}><g stroke=${G} strokeWidth="1.6"><path d="M12 21s-6.5-6.2-6.5-11a6.5 6.5 0 0 1 13 0c0 4.8-6.5 11-6.5 11z"/><circle cx="12" cy="10" r="2.4"/></g><//>`;
+export const IcoFb=({className})=>html`<svg viewBox="0 0 24 24" className=${className} aria-hidden="true" fill="#fff"><path d="M14 8h3V5h-3c-2.2 0-4 1.8-4 4v2H8v3h2v7h3v-7h3l.5-3H13V9c0-.6.4-1 1-1z"/></svg>`;
+export const IcoIg=({className})=>html`<${Svg} vb=${24} className=${className}><g stroke="#fff" strokeWidth="1.7"><rect x="4" y="4" width="16" height="16" rx="5"/><circle cx="12" cy="12" r="3.8"/><circle cx="17" cy="7" r=".9" fill="#fff" stroke="none"/></g><//>`;
+export const Check=()=>html`<svg viewBox="0 0 20 20" className="w-5 h-5 xl:w-[22px] xl:h-[22px] shrink-0" aria-hidden="true"><circle cx="10" cy="10" r="8.5" fill="none" stroke=${G} strokeWidth="1.5"/><path d="M6 10.5l3 3 5-6" fill="none" stroke=${G} strokeWidth="1.8"/></svg>`;

@@ -1,0 +1,21 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root{box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+html{scroll-padding-top:env(safe-area-inset-top,0px);background:#000}
+body{margin:0;background:#030303;color:#fff;font-family:'Barlow Semi Condensed',Arial,sans-serif;overflow-x:hidden}
+.ph{background:repeating-linear-gradient(45deg,#1a1a1a,#1a1a1a 10px,#222 10px,#222 20px);border:1px dashed #c99a4a;color:#c99a4a;display:flex;align-items:center;justify-content:center;text-align:center;font-size:12px;padding:8px}
+a,button,select,input,textarea{touch-action:manipulation}
+a,button{-webkit-tap-highlight-color:rgba(217,164,49,.28)}
+:focus-visible{outline:2px solid #d9a431;outline-offset:2px}
+html{-webkit-text-size-adjust:100%}
+.gold-grad{color:#c99a4a}
+@supports ((-webkit-background-clip:text) or (background-clip:text)){.gold-grad{background-image:linear-gradient(180deg,#d6a95a,#a67a32);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent}}
+@media (max-width:767px){
+ #root .text-xs{font-size:14px;line-height:1.4}
+ #root .text-sm{font-size:15px}
+ #root .text-\[13px\]{font-size:15px}
+ #root .text-\[10px\]{font-size:12px}
+ #root .pb-sticky{padding-bottom:calc(96px + env(safe-area-inset-bottom,0px))}
+}
