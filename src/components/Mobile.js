@@ -2,7 +2,7 @@ import {html,React,useState} from '../lib/h.js';
 import {BookLink} from './BookLink.js';
 import {Logo} from './ui.js';
 import {IcoCal,IcoClock} from './icons.js';
-import {MAP_SRC} from './ServiceMap.js';
+import {LiveMap,MAP_ALT,MAP_SRC} from './ServiceMap.js';
 import {SITE} from '../config/site.js';
 
 export const rateRows=[{t:'MONDAY – FRIDAY',s:'After 5:00 PM',Ic:IcoClock,a:'$249',b:'$279',c:'$299'},{t:'WEEKENDS & HOLIDAYS',s:'All Day',Ic:IcoCal,a:'$289',b:'$319',c:'$349'}];
@@ -27,9 +27,13 @@ export const StickyBar=({onBook})=>html`<div className="fixed bottom-0 inset-x-0
 
 export function MapLightbox({onClose}){
  useLock(onClose);
+ const [live,setLive]=useState('load');
  return html`<div role="dialog" aria-modal="true" aria-label="Service area map, enlarged" className="fixed inset-0 z-[60] bg-black/95 flex flex-col">
   <div className="flex items-center justify-between px-4 py-2 border-b border-gold/45"><span className="font-head text-xl text-gold uppercase tracking-[.03em]">Our Service Areas</span><button type="button" onClick=${onClose} aria-label="Close map" className="w-11 h-11 text-2xl text-gold">✕</button></div>
-  <div className="flex-1 overflow-auto" style=${{touchAction:'pan-x pan-y pinch-zoom',WebkitOverflowScrolling:'touch'}}><img src=${MAP_SRC} alt="Service area map: Zone 1 (gold) around Fontana, Zone 2 (blue), Zone 3 (green), Zone 4 (purple)" className="block max-w-none w-[900px] md:w-full md:max-w-[900px] mx-auto"/></div>
-  <p className="text-center text-sm py-2 text-white/80 md:hidden">Pinch or drag to explore the map</p></div>`;
+  <div className="flex-1 relative min-h-0">
+   ${live!=='fail'?html`<${LiveMap} interactive=${true} onReady=${()=>setLive('ready')} onFail=${()=>setLive('fail')} className="absolute inset-0"/>`:null}
+   ${live!=='ready'?html`<div className="absolute inset-0 overflow-auto bg-black" style=${{touchAction:'pan-x pan-y pinch-zoom',WebkitOverflowScrolling:'touch'}}><img src=${MAP_SRC} alt=${MAP_ALT} className="block max-w-none w-[900px] md:w-full md:max-w-[900px] mx-auto"/></div>`:null}
+  </div>
+  <p className="text-center text-sm py-2 text-white/80">${live==='ready'?'Drag to move · pinch or use + / − to zoom · tap a dot for the city':'Pinch or drag to explore the map'}</p></div>`;
 }
 

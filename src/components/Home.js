@@ -7,6 +7,7 @@ import {MapImage} from './ServiceMap.js';
 import {Burger,RateCard,rateRows} from './Mobile.js';
 import {slug} from './BookingModal.js';
 import {SITE} from '../config/site.js';
+import {Benefits,InviteBanner,PriceFinder,ReferralRibbon} from './Extras.js';
 
 export function Home({onBook,onMenu,onZoomMap}){
  return html`<div className="max-w-[1320px] mx-auto px-3 pt-3 pb-3 pb-sticky sm:px-5 xl:px-7 xl:pt-2 flex flex-col gap-4 xl:gap-[19px] font-body">
@@ -19,6 +20,10 @@ export function Home({onBook,onMenu,onZoomMap}){
    <${Photo} src="/images/technician.jpg" label=${html`TECHNICIAN PHOTO PLACEHOLDER<br/>(add public/images/technician.jpg)`} className="h-44 lg:h-full lg:min-h-[250px] xl:min-h-[295px] lg:w-[300px] xl:w-[462px] lg:col-start-2 lg:row-start-1 lg:row-span-2 xl:relative xl:left-[8px] rounded-md"/>
    <${Panel} className="bg-black p-4 xl:px-[26px] xl:py-0 xl:h-[103px] xl:w-[619px] flex items-center gap-4 xl:gap-[26px] lg:col-start-1 lg:row-start-2 lg:self-start xl:mt-[13px]"><${IcoShield} className="w-[52px] h-[52px] xl:w-[64px] xl:h-[64px] shrink-0"/><div><h2 className="font-head font-semibold text-2xl sm:text-3xl xl:text-[28px] uppercase leading-none tracking-[.02em]">Diagnostic Fee Waived With Repair</h2><p className="text-sm xl:text-[17px] xl:leading-[22px] mt-1 xl:mt-[6px] xl:max-w-[430px]">We diagnose the issue and apply the diagnostic fee toward any repair.</p></div><//>
   </header>
+  <${InviteBanner} onBook=${onBook}/>
+  <${ReferralRibbon}/>
+  <${PriceFinder} onBook=${onBook}/>
+  <${Benefits} onBook=${onBook}/>
 
   <div className="grid grid-cols-1 lg:grid-cols-[705fr_540fr] gap-4 xl:gap-[18px] items-start xl:-mb-[7px]">
    <div>

@@ -19,3 +19,10 @@ html{-webkit-text-size-adjust:100%}
  #root .text-\[10px\]{font-size:12px}
  #root .pb-sticky{padding-bottom:calc(96px + env(safe-area-inset-bottom,0px))}
 }
+
+.zone-tip{background:#000;border:1px solid #c99a4a;color:#fff;font:600 12px "Barlow Semi Condensed",Arial,sans-serif;padding:1px 6px;border-radius:3px;box-shadow:none}
+.zone-tip:before{display:none}
+.leaflet-container{font-family:inherit;outline:0}
+.leaflet-control-attribution{font-size:10px!important;background:rgba(0,0,0,.7)!important;color:#ddd!important}
+.leaflet-control-attribution a{color:#c99a4a!important}
+.leaflet-bar a{width:36px!important;height:36px!important;line-height:36px!important}
