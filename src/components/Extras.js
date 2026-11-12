@@ -3,40 +3,35 @@ import {BookLink} from './BookLink.js';
 import {Panel} from './ui.js';
 import {IcoGear} from './icons.js';
 import {zones} from './Sections.js';
-import {rateRows} from './Mobile.js';
 import {SITE} from '../config/site.js';
 
 /* ---------- Find-your-price + benefits (interactive) ---------- */
 const IcoAir=({className=''})=>html`<svg viewBox="0 0 48 48" fill="none" stroke="currentColor" strokeWidth="2.6" strokeLinecap="round" strokeLinejoin="round" className=${className} aria-hidden="true"><path d="M5 18h25a6 6 0 1 0-6-6"/><path d="M5 27h33a6 6 0 1 1-6 6"/><path d="M5 36h15"/></svg>`;
 const IcoHouse=({className=''})=>html`<svg viewBox="0 0 48 48" fill="none" stroke="currentColor" strokeWidth="2.6" strokeLinecap="round" strokeLinejoin="round" className=${className} aria-hidden="true"><path d="M5 23 24 8l19 15"/><path d="M11 20v21h26V20"/><path d="M20 41V29h8v12"/></svg>`;
 const CITIES=zones.flatMap((z,i)=>z.inc.split(',').map(s=>({city:s.trim(),zi:i}))).sort((a,b)=>a.city.localeCompare(b.city));
-const TIMES=[{id:'reg',label:'Regular hours'},{id:'wk',label:'Weekdays after 5 PM',row:0},{id:'we',label:'Weekends & holidays',row:1}];
 const ZCOL=[{t:'text-gold',b:'border-gold/70'},{t:'text-zb',b:'border-zb/70'},{t:'text-zg',b:'border-zg/70'},{t:'text-zp',b:'border-zp/70'}];
-const priceFor=(zi,time)=>{if(time.id==='reg')return zones[zi].p;const r=rateRows[time.row];return [r.a,r.b,r.c,r.c][zi]};
 export const PriceFinder=({onBook})=>{
- const [city,setCity]=useState('');const [tid,setTid]=useState('reg');
- const hit=CITIES.find(c=>c.city===city);const time=TIMES.find(t=>t.id===tid);const z=hit?zones[hit.zi]:null;
+ const [city,setCity]=useState('');
+ const hit=CITIES.find(c=>c.city===city);const z=hit?zones[hit.zi]:null;
  const btn='flex items-center justify-center bg-[linear-gradient(180deg,#c99a4a,#b98b43)] text-[#120800] font-head font-bold uppercase text-xl tracking-[.02em] rounded-[4px] min-h-[52px] px-6 w-full text-center';
  return html`<${Panel} id="price-finder" className="p-4 sm:p-6 scroll-mt-4">
-  <h2 className="font-head font-semibold uppercase text-2xl sm:text-3xl text-center leading-none">FIND <span className="text-gold">YOUR PRICE</span></h2>
-  <p className="text-center text-sm sm:text-base mt-2 text-white/90">Pick your city and when you need us to see your diagnostic fee.</p>
-  <div className="mt-4 grid md:grid-cols-2 gap-4 md:gap-6 items-start">
+  <h2 className="font-head font-semibold uppercase text-2xl sm:text-3xl text-center leading-none">SEE YOUR PRICE <span className="text-gold">UPFRONT</span></h2>
+  <p className="text-center text-sm sm:text-base mt-2 text-white/90">No surprises. Choose your city and see exactly what your diagnostic costs before you book.</p>
+  <div className="mt-4 grid gap-4 items-start">
    <div className="space-y-4">
-    <div><label htmlFor="pf-city" className="block font-head font-semibold uppercase tracking-[.03em] text-gold text-lg mb-1">1. Your city</label>
+    <div><label htmlFor="pf-city" className="block font-head font-semibold uppercase tracking-[.03em] text-gold text-lg mb-1">Choose your city</label>
      <select id="pf-city" value=${city} onChange=${e=>setCity(e.target.value)} className="w-full min-h-[48px] rounded bg-black border border-gold/60 px-3 text-[16px] text-white focus:outline-none focus:border-gold"><option value="">Select your city…</option>${CITIES.map(c=>html`<option key=${c.city} value=${c.city}>${c.city}</option>`)}</select></div>
-    <div><div id="pf-when" className="font-head font-semibold uppercase tracking-[.03em] text-gold text-lg mb-1">2. When do you need us?</div>
-     <div role="radiogroup" aria-labelledby="pf-when" className="grid gap-2">${TIMES.map(t=>html`<button key=${t.id} type="button" role="radio" aria-checked=${tid===t.id} onClick=${()=>setTid(t.id)} className=${'min-h-[48px] rounded border px-3 text-left font-head font-semibold uppercase tracking-[.02em] text-lg '+(tid===t.id?'bg-gold text-[#120800] border-gold':'border-gold/50 text-white bg-black')}>${t.label}</button>`)}</div></div>
-    <p className="text-sm text-white/80">Don't see your city? Call <a href=${SITE.phoneHref} className="text-gold underline">${SITE.phoneDisplay}</a> and we'll confirm your price.</p>
+    <p className="text-sm text-white/80">Don't see your city? Call <a href=${SITE.phoneHref} className="text-gold underline">${SITE.phoneDisplay}</a> and we'll quickly confirm your price.</p>
    </div>
    <div aria-live="polite">${z?html`<div className=${'rounded-xl border-2 bg-black p-4 text-center '+ZCOL[hit.zi].b}>
-     <div className="text-sm text-white/85">${hit.city} is in</div>
-     <div className=${'font-head font-semibold uppercase text-2xl leading-tight '+ZCOL[hit.zi].t}>${z.n} · ${z.t}</div>
-     <div className="font-head font-bold text-7xl leading-none mt-2">${priceFor(hit.zi,time)}</div>
-     <div className=${'font-head font-semibold text-xl tracking-[.04em] '+ZCOL[hit.zi].t}>DIAGNOSTIC</div>
-     <div className="text-sm font-medium mt-1 tracking-[.02em]">${time.id==='reg'?z.w:'Applied toward repair if completed during same visit.'}</div>
+     <div className="text-sm text-white/85">${hit.city} diagnostic · ${z.n}</div>
+     <div className=${'font-head font-semibold uppercase text-2xl leading-tight '+ZCOL[hit.zi].t}>${z.t}</div>
+     <div className="font-head font-bold text-7xl leading-none mt-2">${z.p}</div>
+     <div className=${'font-head font-semibold text-xl tracking-[.04em] '+ZCOL[hit.zi].t}>UPFRONT DIAGNOSTIC PRICE</div>
+     <div className="text-sm font-medium mt-1 tracking-[.02em]">${z.w}</div>
      <div className="mt-4"><${BookLink} onBook=${onBook} className=${btn}/></div>
      ${SITE.depositNotice?html`<p className="mt-2 text-sm text-gold">${SITE.depositNotice}</p>`:null}
-    </div>`:html`<div className="rounded-xl border-2 border-dashed border-gold/40 p-6 text-center text-white/80 min-h-[160px] flex items-center justify-center">Your diagnostic fee will appear here.</div>`}</div>
+    </div>`:html`<div className="rounded-xl border-2 border-dashed border-gold/40 p-6 text-center text-white/80 min-h-[160px] flex items-center justify-center">Choose your city and your price appears here.</div>`}</div>
   </div><//>`;
 };
 const BENEFITS=[
@@ -64,9 +59,3 @@ export const InviteBanner=({onBook})=>html`<section aria-label="Book your visit"
   <${BookLink} onBook=${onBook} className="shrink-0 flex items-center justify-center bg-[linear-gradient(180deg,#c99a4a,#b98b43)] text-[#120800] font-head font-bold uppercase text-xl tracking-[.02em] rounded-[4px] min-h-[52px] px-8 w-full md:w-auto text-center"/>
 </section>`;
 
-export const ReferralRibbon=()=>SITE.referral?html`<section aria-label="Refer a neighbor" className="rounded-[10px] border-2 border-gold bg-[#0e0e0e] px-4 py-5 sm:px-8 sm:py-6 text-center">
-  <div className="font-head font-semibold uppercase tracking-[.08em] text-sm text-gold">Refer a Neighbor</div>
-  <h2 className="font-head font-bold uppercase text-4xl sm:text-5xl leading-none mt-1 text-gold">${SITE.referral.headline}</h2>
-  <p className="mt-3 text-base sm:text-lg max-w-[760px] mx-auto text-white/95">${SITE.referral.body}</p>
-  <p className="mt-3 text-xs sm:text-sm text-white/75 max-w-[760px] mx-auto">${SITE.referral.terms}</p>
-</section>`:null;

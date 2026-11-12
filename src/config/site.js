@@ -15,10 +15,5 @@ export const SITE={
  googleUrl:'https://share.google/AsfN4ZWVc5UjBezHG',
  hcpToken:'a2c2f1d67276446e838de91c56c9bb64',   // Housecall Pro online-booking widget (from your embed code)
  hcpOrgName:'Rodriguez-Hvac-Mechanical',
- referral:{   // "Refer a Neighbor" ribbon. Set to null to hide it.
-  headline:'Give $50, Get $50',
-  body:'Refer a neighbor to Rodriguez HVAC Mechanical. They get $50 off their first repair, and you get $50 toward your next service. Just mention your name when they book.',
-  terms:'Terms apply: credits apply after the referred customer\u2019s job is completed and paid. One welcome credit per household. Cannot be combined with other offers.',
- },
  depositNotice:'A 50% deposit of the booking price is required to book. Your deposit is credited toward your repair.',   // shown near the Book buttons; set to '' to hide
 };

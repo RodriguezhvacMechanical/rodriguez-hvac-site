@@ -19,7 +19,7 @@ src/
   index.css                Tailwind + approved base styles
   config/site.js           PHONE / EMAIL / HOUSECALL PRO URL / FACEBOOK / INSTAGRAM  <- edit here
   components/              App, Home, ui (Panel, Title, Logo, Photo), icons, Sections (zones, options, rates, badges),
-                           Extras (Find Your Price + Comfort/benefits section), ServiceMap, Mobile (hamburger menu, sticky Call/Book bar, map lightbox, rate cards),
+                           Extras (Find Your Price + Comfort/benefits section), ServiceMap, Mobile (hamburger menu, sticky Call/Book bar, map lightbox),
                            BookingModal, SubPage, BookLink
 ```
 
@@ -29,7 +29,6 @@ The moment you add the files they appear automatically — no code change.
 ## Things you will want to edit (all in `src/config/site.js`)
 
 * `hcpToken` / `hcpOrgName` — your Housecall Pro online-booking widget (already filled in from your embed code). Every Book Appointment button opens it, and your deposit is collected there. If the widget can't load, the built-in request form opens instead.
-* `referral` — the "Give $50, Get $50" Refer a Neighbor ribbon: headline, body and fine-print terms. Edit the wording or amounts here, or set it to `null` to hide it.
 * `depositNotice` — the deposit line shown near the Book buttons (50% deposit, credited toward the repair). Set it to `''` to hide it.
 * `bookingUrl` — optional; if you fill it in, buttons link to that page instead of the widget. Paste your Housecall Pro online-booking link. Empty = the built-in request form opens.
 * `facebookUrl`, `instagramUrl` — your real page links (empty = icon shows, no link).

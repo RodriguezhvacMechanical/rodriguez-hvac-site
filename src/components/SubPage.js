@@ -4,7 +4,7 @@ import {Logo,Panel} from './ui.js';
 import {Burger} from './Mobile.js';
 import {SITE} from '../config/site.js';
 
-export const pages={'repair':'Repair','installation':'Installation','maintenance':'Maintenance','indoor-air-quality':'Indoor Air Quality','about-us':'About Us','reviews':'Reviews','financing':'Financing','contact-us':'Contact Us'};
+export const pages={'repair':'Repair','installation':'Installation','maintenance':'Maintenance','indoor-air-quality':'Indoor Air Quality','about-us':'About Us','reviews':'Reviews','financing':'Financing','builders':'Property Managers & Builders','contact-us':'Contact Us'};
 const REVIEWS=[
  [
   "Curt Saczalski",
@@ -44,10 +44,44 @@ const ReviewList=()=>html`<div className="mt-5">
  <div className="mt-4 grid grid-cols-1 md:grid-cols-2 gap-4">${REVIEWS.map(([n,t])=>html`<figure key=${n} className="rounded-xl border border-gold/45 bg-ink p-4"><div className="text-gold tracking-widest" aria-hidden="true">★★★★★</div><blockquote className="mt-2 text-base leading-snug">${t}</blockquote><figcaption className="mt-3 font-head font-semibold uppercase tracking-wide text-gold">${n}</figcaption></figure>`)}</div>
  ${SITE.googleUrl?html`<a href=${SITE.googleUrl} target="_blank" rel="noopener noreferrer" className="inline-flex items-center mt-5 min-h-[44px] text-gold underline">See all reviews on Google</a>`:null}
 </div>`;
+const PartnerPage=()=>{
+ const [sent,setSent]=useState(false); const [d,setD]=useState({});
+ const set=k=>e=>setD({...d,[k]:e.target.value});
+ const pin='w-full min-h-[44px] rounded bg-black border border-gold/50 px-3 text-base text-white focus:outline-none focus:border-gold';
+ const body=['Name: '+d.name,'Company: '+(d.co||''),'Phone: '+d.phone,'Email: '+d.email,'Property type: '+d.type,'Number of units: '+(d.units||''),'Property address / city: '+d.addr,'What you need: '+(d.msg||'')].join('\n');
+ const mail='mailto:'+SITE.email+'?subject='+encodeURIComponent('Bid request – '+(d.name||''))+'&body='+encodeURIComponent(body);
+ const L=(t,id,full,child)=>html`<div className=${full?'sm:col-span-2':''}><label htmlFor=${id} className="block text-sm font-semibold mb-1">${t}</label>${child}</div>`;
+ return html`<div className="mt-3">
+  <p className="text-lg sm:text-xl text-white/90 max-w-[760px]">Reliable HVAC service for property managers, investors and builders. Quick scheduling, and we back our work.</p>
+  <div className="mt-5 grid md:grid-cols-2 gap-4">
+   <div className="rounded-xl border border-gold/60 bg-ink p-5"><h2 className="font-head font-semibold uppercase text-2xl text-gold">Quick Scheduling</h2><p className="mt-2 text-white/90">Tell us what you need and we get you on the schedule quickly, so your units and projects stay on track.</p></div>
+   <div className="rounded-xl border border-gold/60 bg-ink p-5"><h2 className="font-head font-semibold uppercase text-2xl text-gold">We Back Our Work</h2><p className="mt-2 text-white/90">Quality parts and expert workmanship on every job, and we stand behind what we do.</p></div>
+  </div>
+  <div className="mt-4 grid sm:grid-cols-3 gap-3 text-center">
+   <div className="rounded-lg border border-gold/40 p-3"><div className="font-head font-bold text-2xl text-gold">LICENSED</div><div className="text-sm text-white/85">Lic# ${SITE.license||'1039013'}</div></div>
+   <div className="rounded-lg border border-gold/40 p-3"><div className="font-head font-bold text-2xl text-gold">5.0 ★★★★★</div><div className="text-sm text-white/85">on Google · 8 reviews</div></div>
+   <div className="rounded-lg border border-gold/40 p-3"><div className="font-head font-bold text-2xl text-gold">HONEST PRICING</div><div className="text-sm text-white/85">Quality work, every time</div></div>
+  </div>
+  <figure className="mt-4 rounded-xl border border-gold/45 bg-ink p-4"><div className="text-gold tracking-widest" aria-hidden="true">★★★★★</div><blockquote className="mt-1 text-white/90">“Been using Jesus for over a decade. I won’t use anyone else. If Jesus is busy, I will wait until he is available. Quality work for a reasonable price. I have used Jesus for my apartments, commercial building, and personal home. Jesus does it all!”</blockquote><figcaption className="mt-2 text-sm text-gold">— Abdallah Jadallah, Google review</figcaption></figure>
+  <h2 className="mt-7 font-head font-semibold uppercase text-3xl">Request a <span className="text-gold">Bid</span></h2>
+  <p className="text-white/85 mt-1">Tell us about the property and what you need. Prefer to talk? Call <a href=${SITE.phoneHref} className="text-gold underline">${SITE.phoneDisplay}</a>.</p>
+  ${sent?html`<div className="mt-4 space-y-3 max-w-xl"><p>Your request is ready. Tap below to send it to Rodriguez HVAC Mechanical by email, or call us directly.</p><a href=${mail} className="block text-center bg-gold text-black font-head font-bold uppercase text-xl py-3 rounded-sm min-h-[44px]">Send Request by Email</a><a href=${SITE.phoneHref} className="block text-center border border-gold text-gold font-head font-bold uppercase text-xl py-3 rounded-sm min-h-[44px]">Call ${SITE.phoneDisplay}</a></div>`:
+  html`<form className="mt-4 grid sm:grid-cols-2 gap-3 max-w-2xl" onSubmit=${e=>{e.preventDefault();setSent(true)}}>
+   ${L('Full name','b-name',false,html`<input id="b-name" required autoComplete="name" className=${pin} value=${d.name||''} onChange=${set('name')}/>`)}
+   ${L('Company (optional)','b-co',false,html`<input id="b-co" autoComplete="organization" className=${pin} value=${d.co||''} onChange=${set('co')}/>`)}
+   ${L('Phone','b-phone',false,html`<input id="b-phone" type="tel" required autoComplete="tel" className=${pin} value=${d.phone||''} onChange=${set('phone')}/>`)}
+   ${L('Email','b-email',false,html`<input id="b-email" type="email" required autoComplete="email" className=${pin} value=${d.email||''} onChange=${set('email')}/>`)}
+   ${L('Property type','b-type',false,html`<select id="b-type" required className=${pin} value=${d.type||''} onChange=${set('type')}><option value="">Select…</option>${['Single-family rental','Apartments / multi-unit','Commercial building','New construction','Other'].map(o=>html`<option key=${o}>${o}</option>`)}</select>`)}
+   ${L('Number of units (optional)','b-units',false,html`<input id="b-units" inputMode="numeric" className=${pin} value=${d.units||''} onChange=${set('units')}/>`)}
+   ${L('Property address or city','b-addr',true,html`<input id="b-addr" required className=${pin} value=${d.addr||''} onChange=${set('addr')}/>`)}
+   ${L('What do you need?','b-msg',true,html`<textarea id="b-msg" rows="3" className=${pin+' py-2'} value=${d.msg||''} onChange=${set('msg')}></textarea>`)}
+   <button type="submit" className="sm:col-span-2 bg-gold text-black font-head font-bold uppercase text-xl py-3 rounded-sm min-h-[44px]">Continue</button></form>`}
+ </div>`;
+};
 export const SubPage=({id,onBook,onMenu})=>html`<div className="max-w-[1100px] mx-auto p-3 sm:p-5 space-y-6 pb-sticky">
  <header className="flex flex-wrap justify-between items-center gap-3"><a href="#" aria-label="Rodriguez HVAC Mechanical home"><${Logo} small=${true}/></a><${Burger} onClick=${onMenu}/><${BookLink} onBook=${onBook} className="max-md:hidden inline-flex items-center justify-center bg-gold text-black font-head font-bold uppercase text-xl px-6 py-2 rounded-sm min-h-[44px]"/></header>
  <${Panel} className="p-5 sm:p-8"><h1 className="font-head font-bold uppercase text-4xl sm:text-5xl"><span className="text-gold">${pages[id]}</span></h1>
   ${id==='contact-us'?html`<div className="mt-4 space-y-2"><a href=${SITE.phoneHref} className="block text-xl min-h-[44px]">909.582.0902</a><a href=${'mailto:'+SITE.email} className="block break-all min-h-[44px]">rodriguezhvacmechanical@gmail.com</a><p>Serving the Inland Empire, CA & Surrounding Areas</p></div>`:null}
-  ${id==='reviews'?html`<${ReviewList}/>`:html`<div className="ph rounded-md min-h-[160px] mt-5">PAGE CONTENT PLACEHOLDER — send your copy for “${pages[id]}”</div>`}
+  ${id==='builders'?html`<${PartnerPage}/>`:id==='reviews'?html`<${ReviewList}/>`:html`<div className="ph rounded-md min-h-[160px] mt-5">PAGE CONTENT PLACEHOLDER — send your copy for “${pages[id]}”</div>`}
   <a href="#" className="inline-block mt-5 text-gold underline min-h-[44px] py-2">← Back to home</a><//></div>`;
 

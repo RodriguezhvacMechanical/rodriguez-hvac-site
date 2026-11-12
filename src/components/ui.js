@@ -13,9 +13,9 @@ export const Title=({a,b,sub,cls=''})=>html`<div className=${'text-center border
 export const LOGO_SRC='/images/logo.png';
 export const Logo=({small})=>html`<img src=${LOGO_SRC} alt="Rodriguez HVAC Mechanical – Keeping You Comfortable" width="900" height="295" className=${small?'w-[200px] xl:w-[230px]':'w-[230px] sm:w-[260px] xl:w-[336px] xl:ml-[4px]'} style=${{height:'auto'}}/>`;
 
-export const Photo=({src,label,className=''})=>{
+export const Photo=({src,label,className='',fit='object-cover'})=>{
  const [bad,setBad]=useState(false);
  return bad
   ?html`<div className=${'ph '+className}>${label}</div>`
-  :html`<img src=${src} alt="" onError=${()=>setBad(true)} className=${'object-cover w-full '+className}/>`;
+  :html`<img src=${src} alt="" onError=${()=>setBad(true)} className=${fit+' w-full '+className}/>`;
 };
