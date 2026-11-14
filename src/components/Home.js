@@ -7,24 +7,49 @@ import {MapImage} from './ServiceMap.js';
 import {Burger} from './Mobile.js';
 import {slug} from './BookingModal.js';
 import {SITE} from '../config/site.js';
-import {Benefits,InviteBanner,PriceFinder} from './Extras.js';
+import {Benefits,InviteBanner} from './Extras.js';
+import {ServiceAreaCheck,SymptomChecker,BeforeAfter,TimeBanner,SeasonChecklist} from './Interactive.js';
+
+function InstallSlider(){
+ const imgs=(SITE.installPhotos||[]).map(x=>typeof x==='string'?{src:x,pos:'50% 50%'}:x);
+ const [i,setI]=React.useState(0); const [hold,setHold]=React.useState(false);
+ React.useEffect(()=>{
+  if(imgs.length<2||hold) return;
+  try{ if(window.matchMedia('(prefers-reduced-motion: reduce)').matches) return; }catch(e){}
+  const t=setInterval(()=>setI(n=>(n+1)%imgs.length),4000);
+  return()=>clearInterval(t);
+ },[imgs.length,hold]);
+ if(!imgs.length) return html`<section aria-label="Recent installs and work" className="ph rounded-[10px] h-[320px] sm:h-[380px] xl:h-[400px] text-center px-4">INSTALL PHOTOS PLACEHOLDER (add photos to public/images/installs and list them in config/site.js)</section>`;
+ return html`<section aria-label="Recent installs and work" aria-roledescription="carousel" onMouseEnter=${()=>setHold(true)} onMouseLeave=${()=>setHold(false)} onFocus=${()=>setHold(true)} onBlur=${()=>setHold(false)} className="relative overflow-hidden rounded-[10px] border-2 border-gold/60 bg-black h-[320px] sm:h-[380px] xl:h-[400px]">
+  ${imgs.map((s,k)=>html`<div key=${s.src} aria-hidden=${k!==i} className=${'absolute inset-0 transition-opacity duration-700 '+(k===i?'opacity-100':'opacity-0')}><img src=${s.src} alt="" aria-hidden="true" loading="lazy" className="absolute inset-0 w-full h-full object-cover scale-110 blur-xl opacity-60"/><img src=${s.src} alt=${'Recent install or service photo '+(k+1)+' of '+imgs.length} loading=${k===0?'eager':'lazy'} className="absolute inset-0 w-full h-full object-contain"/></div>`)}
+  <div className="absolute inset-x-0 top-0 bg-gradient-to-b from-black/80 to-transparent px-3 pt-2 pb-6 font-head font-semibold uppercase tracking-[.04em] text-lg text-gold">Recent <span className="text-white">Installs & Work</span></div>
+  ${imgs.length>1?html`<div className="absolute bottom-2 inset-x-0 px-3 flex justify-center gap-0">${imgs.map((s,k)=>html`<button key=${s.src} type="button" aria-label=${'Show install photo '+(k+1)} aria-current=${k===i} onClick=${()=>setI(k)} className="min-w-0 flex-1 max-w-[44px] h-6 flex items-center justify-center"><span className=${'block h-2.5 rounded-full transition-all '+(k===i?'w-6 bg-gold':'w-2.5 bg-white/70')}></span></button>`)}</div>`:null}
+ </section>`;
+}
 
 export function Home({onBook,onMenu,onZoomMap}){
  return html`<div className="max-w-[1320px] mx-auto px-3 pt-3 pb-3 pb-sticky sm:px-5 xl:px-7 xl:pt-2 flex flex-col gap-4 xl:gap-[19px] font-body">
+  <${TimeBanner} onBook=${onBook}/>
   <header className="relative grid grid-cols-1 gap-4 lg:gap-y-0">
    <${Burger} onClick=${onMenu} className="absolute top-0 right-0 z-20"/>
    <div className="relative z-10 flex flex-col sm:flex-row sm:items-center xl:items-start gap-4 xl:gap-0 xl:pt-[27px] lg:col-start-1">
     <${Logo}/>
     <div className="sm:border-l sm:border-white/15 sm:pl-6 sm:pr-14 md:pr-0 xl:ml-[35px] xl:pl-[34px] xl:mt-[10px] xl:pb-[2px] min-w-0"><h1 className="font-head font-bold uppercase text-[38px] min-[375px]:text-[42px] sm:text-5xl lg:text-[40px] xl:text-[47px] leading-[.98] xl:leading-[46px] tracking-[.01em] xl:whitespace-nowrap">Expert Diagnostics.<br/><span className="gold-grad">Precise Solutions.</span></h1><p className="text-sm xl:text-[15px] xl:leading-[20px] mt-2 xl:mt-[10px]">Honest Pricing. Quality Work. Comfort You Can Count On.</p></div>
    </div>
-   <${Panel} className="bg-black p-4 xl:px-[26px] xl:py-0 xl:h-[103px] xl:w-[619px] flex items-center gap-4 xl:gap-[26px] lg:col-start-1 lg:row-start-2 lg:self-start xl:mt-[13px]"><${IcoShield} className="w-[52px] h-[52px] xl:w-[64px] xl:h-[64px] shrink-0"/><div><h2 className="font-head font-semibold text-2xl sm:text-3xl xl:text-[28px] uppercase leading-none tracking-[.02em]">No-Risk Diagnosis</h2><p className="text-sm xl:text-[17px] xl:leading-[22px] mt-1 xl:mt-[6px] xl:max-w-[430px]">Find out what's wrong. If you repair with us, the fee is waived.</p></div><//>
+   <div className="lg:col-start-1 lg:row-start-2 xl:mt-[13px] xl:w-[619px]"><${InstallSlider}/></div>
+   <${Panel} className="bg-black p-4 xl:px-[26px] xl:py-0 xl:h-[103px] xl:w-[619px] flex items-center gap-4 xl:gap-[26px] lg:col-start-1 lg:row-start-3 lg:self-start xl:mt-[13px]"><${IcoShield} className="w-[52px] h-[52px] xl:w-[64px] xl:h-[64px] shrink-0"/><div><h2 className="font-head font-semibold text-xl sm:text-2xl xl:text-[21px] uppercase leading-[1.05] tracking-[.02em]">AC down? Heat out? Find out why, risk free.</h2><p className="text-sm xl:text-[17px] xl:leading-[22px] mt-1 xl:mt-[6px] xl:max-w-[430px]">Your diagnosis is on us when you repair with us.</p></div><//>
   </header>
   <${InviteBanner} onBook=${onBook}/>
 
-  <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 xl:gap-[18px] items-stretch">
-   <${PriceFinder} onBook=${onBook}/>
+  <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 xl:gap-[18px] items-start">
+   <div className="flex flex-col gap-4 xl:gap-[18px]"><${ServiceAreaCheck} onBook=${onBook}/><${SymptomChecker} onBook=${onBook}/></div>
    <${Panel} className="overflow-hidden"><${Title} a="OUR" b="SERVICE AREAS" cls="xl:h-[50px]"/><${MapImage} onZoom=${onZoomMap}/>
     <div className="flex flex-wrap justify-center gap-x-5 gap-y-1 py-3 xl:py-0 xl:h-[69px] xl:items-center xl:gap-x-[30px] font-head text-xl xl:text-[25px] font-semibold">${[['ZONE 1',C.gold],['ZONE 2',C.zb],['ZONE 3',C.zg],['ZONE 4',C.zp]].map(([n,c])=>html`<span key=${n} className="flex items-center gap-2 xl:gap-[9px]"><i className="inline-block w-5 h-5 xl:w-[25px] xl:h-[25px] rounded-full" style=${{background:c}}></i><span style=${{color:c}}>${n}</span></span>`)}</div><//>
+  </div>
+
+  <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 xl:gap-[18px] items-start">
+   <${BeforeAfter}/>
+   <${SeasonChecklist}/>
   </div>
 
   <div className="grid grid-cols-1 lg:grid-cols-[619fr_625fr] gap-4 xl:gap-[19px] items-stretch">
@@ -52,11 +77,11 @@ export function Home({onBook,onMenu,onZoomMap}){
 
   <footer className="grid grid-cols-2 lg:grid-cols-[350fr_197fr_175fr_363fr_178fr] gap-6 lg:gap-0 py-4 xl:pt-[2px] xl:pb-0 text-sm xl:text-[14.5px]">
    <div className="col-span-2 lg:col-span-1 xl:pl-[14px] xl:pt-[3px]"><${Logo} small=${true}/></div>
-   <nav aria-label="Services"><h3 className="font-medium text-base xl:text-[16.5px] tracking-[.02em] mb-1 xl:mb-[3px]"><a href="#services" className="inline-block py-3 -my-3">SERVICES</a></h3>${['Repair','Installation','Maintenance','Indoor Air Quality'].map(t=>html`<a key=${t} href=${'#'+slug(t)} className="block py-3 lg:py-[6px] xl:py-0 xl:leading-[19px] text-white/90">${t}</a>`)}</nav>
+   <nav aria-label="Services"><h3 className="font-medium text-base xl:text-[16.5px] tracking-[.02em] mb-1 xl:mb-[3px]"><a href="#our-services" className="inline-block py-3 -my-3">SERVICES</a></h3>${['Repair','Installation','Maintenance','Indoor Air Quality'].map(t=>html`<a key=${t} href=${'#'+slug(t)} className="block py-3 lg:py-[6px] xl:py-0 xl:leading-[19px] text-white/90">${t}</a>`)}</nav>
    <nav aria-label="Company"><h3 className="font-medium text-base xl:text-[16.5px] tracking-[.02em] mb-1 xl:mb-[3px]">COMPANY</h3>${['About Us','Reviews','Financing','Contact Us'].map(t=>html`<a key=${t} href=${'#'+slug(t)} className="block py-3 lg:py-[6px] xl:py-0 xl:leading-[19px] text-white/90">${t}</a>`)}</nav>
    <div className="col-span-2 lg:col-span-1"><h3 className="font-medium text-base xl:text-[16.5px] tracking-[.02em] mb-1 xl:mb-[3px]">CONTACT US</h3>
     <a href=${SITE.phoneHref} className="flex items-center gap-[11px] py-3 lg:py-[6px] xl:py-0 xl:h-[23px]"><${IcoPhoneO} className="w-[18px] h-[18px] shrink-0"/>909.582.0902</a>
-    <a href=${'mailto:'+SITE.email} className="flex items-center gap-[11px] py-3 lg:py-[6px] xl:py-0 xl:h-[23px] break-all"><${IcoMail} className="w-[18px] h-[18px] shrink-0"/>rodriguezhvacmechanical@gmail.com</a>
+    <a href=${'mailto:'+SITE.email} className="flex items-center gap-[11px] py-3 lg:py-[6px] xl:py-0 xl:h-[23px] break-all"><${IcoMail} className="w-[18px] h-[18px] shrink-0"/>rodriguezhvacmechanicalac@gmail.com</a>
     <p className="flex items-center gap-[11px] py-1 xl:leading-[17px]"><${IcoPinO} className="w-[18px] h-[18px] shrink-0"/><span>Serving the Inland Empire<br/>CA & Surrounding Areas</span></p></div>
    <div className="col-span-2 lg:col-span-1"><h3 className="font-medium text-base xl:text-[16.5px] tracking-[.02em] mb-2 xl:mb-[8px]">FOLLOW US</h3><div className="flex gap-3 xl:gap-[10px]"><${Social} label="Facebook" url=${SITE.facebookUrl}><${IcoFb} className="w-6 h-6"/><//><${Social} label="Instagram" url=${SITE.instagramUrl}><${IcoIg} className="w-5 h-5"/><//></div></div>
   </footer>
